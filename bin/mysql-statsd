@@ -3,4 +3,4 @@
 require 'rubygems'
 require 'mysql-statsd'
 
-Mysql::Statsd.run
+Mysql::Statsd::Runner.new(ARGV[0]).run!

@@ -5,18 +5,20 @@ require 'statsd-ruby'
 
 module Mysql
   module Statsd
-    class << self
-      def run
+    class Runner
+      attr_reader :config
+
+      def initialize(config_path)
+        @config ||= YAML.load_file config_path
+      end
+
+      def run!
         statuses.each do |status|
           statsd.gauge status["Variable_name"].downcase, status["Value"]
         end
       end
 
       private
-
-      def config
-        @config ||= YAML.load_file 'config.yml'
-      end
 
       def statsd
         @statsd ||= ::Statsd.new config['statsd']['host']
