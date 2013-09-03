@@ -1,6 +1,7 @@
 mysql:
   host: 'localhost'
-  username: 'root'
+  username: 'user'
+  password: 'password'
 
 statsd:
   host: 'localhost'
