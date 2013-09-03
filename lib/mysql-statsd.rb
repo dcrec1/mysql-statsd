@@ -18,18 +18,18 @@ module Mysql
         end
       end
 
+      def statsd
+        @statsd ||= ::Statsd.new(config['statsd']['host']).tap { |sd| sd.namespace = config['statsd']['namespace'] }
+      end
+
+      def mysql
+        @mysql ||= Mysql2::Client.new config['mysql']
+      end
+
       private
 
-      def statsd
-        @statsd ||= ::Statsd.new(config['statsd']['host']).tap { |sd| sd.namespace = 'mysql' }
-      end
-
       def statuses
-        client.query "SHOW GLOBAL STATUS"
-      end
-
-      def client
-        @client ||= ::Mysql2::Client.new config['mysql']
+        mysql.query "SHOW GLOBAL STATUS"
       end
     end
   end

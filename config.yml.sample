@@ -5,3 +5,4 @@ mysql:
 
 statsd:
   host: 'localhost'
+  namespace: 'mysql'
