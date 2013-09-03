@@ -1,0 +1,6 @@
+mysql:
+  host: 'localhost'
+  username: 'root'
+
+statsd:
+  host: 'localhost'
