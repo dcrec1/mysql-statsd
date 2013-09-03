@@ -21,7 +21,7 @@ module Mysql
       private
 
       def statsd
-        @statsd ||= ::Statsd.new config['statsd']['host']
+        @statsd ||= ::Statsd.new(config['statsd']['host']).tap { |sd| sd.namespace = 'mysql' }
       end
 
       def statuses
