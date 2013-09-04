@@ -1,4 +1,4 @@
-# Mysql::Statsd
+# MySQL::StatsD
 
 Queries 'SHOW GLOBAL STATUS' and sends the data to StatsD.
 
