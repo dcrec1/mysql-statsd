@@ -29,12 +29,12 @@ describe Mysql::Statsd::Runner do
     end
 
     it "should query the global status" do
-      subject.mysql.should_receive(:query).with("SHOW GLOBAL STATUS").and_return []
+      subject.mysql.should_receive(:query).with("SHOW GLOBAL STATUS").and_return [{'Variable_name' => 'Fake', 'Value' => 1}]
       subject.run!
     end
 
     it "should query the process list" do
-      subject.mysql.should_receive(:query).with("SHOW PROCESSLIST").and_return []
+      subject.mysql.should_receive(:query).with("SHOW PROCESSLIST").and_return [{'Command' => 'Fake'}]
       subject.run!
     end
   end
