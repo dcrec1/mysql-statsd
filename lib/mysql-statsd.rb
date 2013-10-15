@@ -13,13 +13,8 @@ module Mysql
       end
 
       def run!
-        statuses.each do |status|
-          statsd.gauge status["Variable_name"].downcase, status["Value"]
-        end
-
-        process_list.each do |process|
-          statsd.increment status["Command"].downcase
-        end
+        instrument_statuses
+        instrument_process_list
       end
 
       def statsd
@@ -32,12 +27,16 @@ module Mysql
 
       private
 
-      def statuses
-        mysql.query "SHOW GLOBAL STATUS"
+      def instrument_process_list
+        show("PROCESSLIST").each { |entry| statsd.increment entry["Command"].downcase }
       end
 
-      def process_list
-        mysql.query "SHOW PROCESSLIST"
+      def instrument_statuses
+        show("GLOBAL STATUS").each { |entry| statsd.gauge entry["Variable_name"].downcase, entry["Value"] }
+      end
+
+      def show(term)
+        mysql.query "SHOW #{term}"
       end
     end
   end
