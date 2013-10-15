@@ -1,12 +1,15 @@
 # MySQL::StatsD
 
-Queries 'SHOW GLOBAL STATUS' and sends the data to StatsD.
+Sends data to StatsD from this queries:
+
+    * SHOW GLOBAL STATUS
+    * SHOW PROCESSLIST
 
 ## Installation
 
     gem install mysql-statsd
 
-Then copy config.yml.sample to a desired path and customize
+Then copy config.yml.sample to a desired path and customize.
 
 ## Usage
 
