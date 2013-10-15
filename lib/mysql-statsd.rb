@@ -16,6 +16,10 @@ module Mysql
         statuses.each do |status|
           statsd.gauge status["Variable_name"].downcase, status["Value"]
         end
+
+        process_list.each do |process|
+          statsd.increment status["Command"].downcase
+        end
       end
 
       def statsd
@@ -30,6 +34,10 @@ module Mysql
 
       def statuses
         mysql.query "SHOW GLOBAL STATUS"
+      end
+
+      def process_list
+        mysql.query "SHOW PROCESSLIST"
       end
     end
   end

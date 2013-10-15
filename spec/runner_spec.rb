@@ -22,4 +22,20 @@ describe Mysql::Statsd::Runner do
   it "should set the mysql user from the config file" do
     subject.mysql.query_options[:username].should == 'user'
   end
+
+  describe "#run!" do
+    before :each do
+      subject.mysql.stub(:query).and_return []
+    end
+
+    it "should query the global status" do
+      subject.mysql.should_receive(:query).with("SHOW GLOBAL STATUS").and_return []
+      subject.run!
+    end
+
+    it "should query the process list" do
+      subject.mysql.should_receive(:query).with("SHOW PROCESSLIST").and_return []
+      subject.run!
+    end
+  end
 end
