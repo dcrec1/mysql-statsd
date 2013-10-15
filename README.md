@@ -11,3 +11,7 @@ Then copy config.yml.sample to a desired path and customize
 ## Usage
 
     mysql-statsd /path/to/config.yml
+
+## Testing
+
+    rspec spec
