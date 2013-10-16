@@ -34,9 +34,10 @@ describe Mysql::Statsd::Runner do
     end
 
     it "should instrument the process list" do
-      subject.mysql.stub(:query).with("SHOW PROCESSLIST").and_return [{'Command' => 'Jump', 'State' => 'Long Lived'}]
-      subject.statsd.should_receive(:increment).with('command.jump')
-      subject.statsd.should_receive(:increment).with('state.long_lived')
+      subject.mysql.stub(:query).with("SHOW PROCESSLIST").and_return [{'Command' => 'Jump', 'State' => 'Long Lived'}, {'Command' => 'Jump', 'State' => 'Long Dead'}]
+      subject.statsd.should_receive(:gauge).with('state.long_lived', 1)
+      subject.statsd.should_receive(:gauge).with('state.long_dead', 1)
+      subject.statsd.should_receive(:gauge).with('command.jump', 2)
       subject.run!
     end
   end

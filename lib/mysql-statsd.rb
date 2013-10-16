@@ -28,10 +28,9 @@ module Mysql
       private
 
       def instrument_process_list
-        show("PROCESSLIST").each do |entry|
-          statsd.increment metric("Command", entry)
-          statsd.increment metric("State", entry)
-        end
+        @process_list = show "PROCESSLIST"
+        instrument_processes "State"
+        instrument_processes "Command"
       end
 
       def instrument_statuses
@@ -42,8 +41,8 @@ module Mysql
         mysql.query "SHOW #{term}"
       end
 
-      def metric(name, entry)
-        "#{name}.#{entry[name].gsub(" ", "_")}".downcase
+      def instrument_processes(metric_name)
+        @process_list.map { |row| row[metric_name] }.group_by(&:to_s).each { |metric, values| statsd.gauge "#{metric_name}.#{metric.gsub(" ", "_")}".downcase, values.count }
       end
     end
   end
