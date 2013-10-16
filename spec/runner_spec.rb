@@ -33,8 +33,10 @@ describe Mysql::Statsd::Runner do
       subject.run!
     end
 
-    it "should query the process list" do
-      subject.mysql.should_receive(:query).with("SHOW PROCESSLIST").and_return [{'Command' => 'Fake'}]
+    it "should instrument the process list" do
+      subject.mysql.stub(:query).with("SHOW PROCESSLIST").and_return [{'Command' => 'Jump', 'State' => 'Long Lived'}]
+      subject.statsd.should_receive(:increment).with('command.jump')
+      subject.statsd.should_receive(:increment).with('state.long_lived')
       subject.run!
     end
   end

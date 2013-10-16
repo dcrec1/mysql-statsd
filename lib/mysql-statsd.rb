@@ -28,7 +28,10 @@ module Mysql
       private
 
       def instrument_process_list
-        show("PROCESSLIST").each { |entry| statsd.increment entry["Command"].downcase }
+        show("PROCESSLIST").each do |entry|
+          statsd.increment metric("Command", entry)
+          statsd.increment metric("State", entry)
+        end
       end
 
       def instrument_statuses
@@ -37,6 +40,10 @@ module Mysql
 
       def show(term)
         mysql.query "SHOW #{term}"
+      end
+
+      def metric(name, entry)
+        "#{name}.#{entry[name].gsub(" ", "_")}".downcase
       end
     end
   end
