@@ -17,11 +17,11 @@ Then copy config.yml.sample to a desired path and customize.
 
 ## Tips
 
-    * You may want to configure StatsD to send the gauges as zero when not received:
+* You may want to configure StatsD to send the gauges as zero when not received:
 
     deleteGauges: true
 
-    * If using Graphite, the derivate function is useful in gauges that only increment over time, for example threads_running
+* If using Graphite, the derivate function is useful in gauges that only increment over time, for example threads_running
 
 ## Testing
 
