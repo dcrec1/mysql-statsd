@@ -4,6 +4,18 @@ Sends data to StatsD from this queries:
 
     * SHOW GLOBAL STATUS
     * SHOW PROCESSLIST
+    * Custom
+
+## Custom Queries
+
+Define them in the config file under mysql.queries . For example:
+
+    mysql:
+      ...
+      database: app_production
+      queries:
+        - SELECT count(1) as 'users.count' from users
+        - SELECT count(1) as 'premium_users.count' from users where premium = 1
 
 ## Installation
 
