@@ -40,5 +40,11 @@ describe Mysql::Statsd::Runner do
       subject.statsd.should_receive(:gauge).with('command.jump', 2)
       subject.run!
     end
+
+    it "should query configured queries" do
+      subject.mysql.stub(:query).with("SELECT count(1) as 'users.count' from users").and_return [{'users.count' => 15}]
+      subject.statsd.should_receive(:gauge).with('users.count', 15)
+      subject.run!
+    end
   end
 end

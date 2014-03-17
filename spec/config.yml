@@ -1,6 +1,8 @@
 mysql:
   host: 'mysqlhost'
   username: 'user'
+  queries:
+    - SELECT count(1) as 'users.count' from users
 
 statsd:
   host: 'statsdhost'

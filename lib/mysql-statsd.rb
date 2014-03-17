@@ -15,6 +15,7 @@ module Mysql
       def run!
         instrument_statuses
         instrument_process_list
+        instrument_queries
       end
 
       def statsd
@@ -35,6 +36,12 @@ module Mysql
 
       def instrument_statuses
         show("GLOBAL STATUS").each { |entry| statsd.gauge entry["Variable_name"].downcase, entry["Value"] }
+      end
+
+      def instrument_queries
+        config['mysql']['queries'].map { |query| mysql.query(query).first }.compact.each do |entry|
+          statsd.gauge *entry.to_a.flatten
+        end
       end
 
       def show(term)
