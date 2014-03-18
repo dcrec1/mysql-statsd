@@ -39,7 +39,7 @@ module Mysql
       end
 
       def instrument_queries
-        config['mysql']['queries'].map { |query| mysql.query(query).first }.compact.each do |entry|
+        (config['mysql']['queries'] || []).map { |query| mysql.query(query).first }.compact.each do |entry|
           statsd.gauge *entry.to_a.flatten
         end
       end

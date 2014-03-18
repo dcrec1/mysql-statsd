@@ -1,0 +1,7 @@
+mysql:
+  host: 'mysqlhost'
+  username: 'user'
+
+statsd:
+  host: 'statsdhost'
+  namespace: 'ns'

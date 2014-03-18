@@ -1,7 +1,8 @@
 require 'mysql-statsd'
 
 describe Mysql::Statsd::Runner do
-  subject { Mysql::Statsd::Runner.new "spec/config.yml" }
+  let(:config_path) { "spec/config.yml" }
+  subject { Mysql::Statsd::Runner.new config_path }
 
   before :each do
     Mysql2::Client.any_instance.stub :connect
@@ -45,6 +46,14 @@ describe Mysql::Statsd::Runner do
       subject.mysql.stub(:query).with("SELECT count(1) as 'users.count' from users").and_return [{'users.count' => 15}]
       subject.statsd.should_receive(:gauge).with('users.count', 15)
       subject.run!
+    end
+
+    context "with a config file without queries" do
+      let(:config_path) { "spec/config_without_queries.yml" }
+
+      it "should not break" do
+        lambda { subject.run! }.should_not raise_exception
+      end
     end
   end
 end
