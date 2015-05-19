@@ -33,7 +33,7 @@ Then copy config.yml.sample to a desired path and customize.
 
    ```deleteGauges: true```
 
-* If using Graphite, the derivate function is useful in gauges that only increment over time, for example threads_running
+* If using Graphite, the derivate function is useful in gauges that only increment over time, for example `threads_running`
 
 ## Testing
 
